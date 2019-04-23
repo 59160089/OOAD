@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <%- include('./form/CSS'); -%>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded" style="min-height: 140px;">
+        <!-- Brand/logo -->
+        <p class="navbar-brand" href="#">
+            <img src="/image/User icon.jpg" style="width:140px;">
+        </p>
+
+        <ul class="navbar-nav ml-auto" style="color:white; ">
+            <li>นาย &nbsp; xxxxxxxxxx &nbsp;</li>
+            <li>TYPE &nbsp;</li>
+            <li>Admin &nbsp;</li>
+            <li>
+                <a href="/"><img src="/image/LogOut icon.png" style="width:40px;"></a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <div class="container-fluid" style="width:auto;">
+        <div class="row">
+            <nav class="col-sm-2">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/mainAdmin">หน้าหลัก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageBuilding">จัดการตึก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageStudent">จัดการบุคลากร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">คุมสอบ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">คำร้อง</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageYear">จัดการปีการศึกษา</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/manageSubject">จัดการรายวิชา/คอร์สเรียน</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="col-sm-10">
+                <div class="container">
+                    <button style="float: right;" type="submit" class="btn btn-success" data-toggle="modal" data-toggle="modal" data-target=".addSubjectModal">เพิ่ม</button>
+                    <ul class="nav nav-tabs" style="float: left;">
+                        <li class="nav-item"><a class="nav-link active">จัดการรายวิชา</a></li>
+                    </ul>
+                    <div style="clear: both"></div>
+                    <div style="height: 400px !important; overflow: auto;">
+
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td><b>รหัสวิชา</b></td>
+                                    <td><b>ชื่อวิชา</b></td>
+                                    <td><b>หน่วยกิต</b></td>
+                                    <td><b>สถานะ</b></td>
+                                    <td><b>เปิด / ปิดรายวิชา</b></td>
+                                    <td><b>คอร์สเรียน</b></td>
+                                    <td><b>แก้ไข</b></td>
+                                    <td><b>ลบ</b></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i=0; i < subject.length; i++) { %>
+
+                                    <tr>
+                                        <td>
+                                            <%= subject[i].sub_id %>
+                                        </td>
+                                        <td>
+                                            <%= subject[i].sub_name %>
+                                        </td>
+                                        <td>
+                                            <%= subject[i].credit %>
+                                        </td>
+                                        <td>
+                                            <%= subject[i].sub_status %>
+                                        </td>
+                                        <td>
+                                            <a href="manageSubject/change/<%= subject[i]._id %>" class="btn btn-primary">ปิด/เปิด</a>
+                                        </td>
+                                        <td>
+
+                                            <a class="btn btn-primary" href="/manageCourse/<%= subject[i]._id %>/">คอร์สเรียน</a>
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-toggle="modal" data-target=".editSubjectModal" onclick="editSubject('<%= subject[i]._id %>','<%= subject[i].sub_id %>','<%= subject[i].sub_name %>','<%= subject[i].sub_status %>','<%= subject[i].semester %>','<%= subject[i].year %>')">แก้ไข</button>
+                                        </td>
+                                        <td><a href="manageSubject/delete/<%= subject[i]._id %>" class="btn btn-danger">ลบ</a></td>
+                                    </tr>
+
+                                    <% } %>
+                            </tbody>
+                            <script type="text/javascript">
+                                var editSubject = (_id, sub_id, sub_name, sub_status, semester, year) => {
+                                    _id: $('#editsubid').val(_id)
+                                    sub_id: $('#editsub_id').val(sub_id)
+                                    sub_name: $('#editsub_name').val(sub_name)
+                                    sub_status: $('#editsub_status').val(sub_status)
+                                    semester: $('#editsemester').val(semester)
+                                    year: $('#edityear').val(year)
+                                }
+                            </script>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <!-- Modal เพิ่ม -->
+                <div class="modal fade addSubjectModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <form action="manageSubject/create" method="post" id="formcreate">
+
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addSubjectModal">
+                                        เพิ่มรายวิชาเรียน</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group row">
+                                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">รหัสวิชา</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control form-control-lg" name="sub_id" id="sub_id">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">ชื่อวิชา</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control form-control-lg" name="sub_name" id="sub_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">สถานะ</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control  form-control-lg" id="sub_status" name="sub_status">
+                                            <option>ปิด</option>
+                                            <option>เปิด</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">หน่วยกิต</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control form-control-lg" name="credit" id="credit">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                    <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                                </div>
+                        </form>
+                        </div>
+                    </div>
+                    <!--เพิ่ม-->
+                </div>
+
+                <!-- Modal แก้ไข -->
+                <div class="modal fade editSubjectModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <form action="manageSubject/updateSubject" method="post" id="formedit">
+
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editSubjectModal">
+                                        แก้ไขรายวิชาเรียน</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group row">
+                                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">รหัสวิชา</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="_id" id="editsubid" style="display: none">
+                                            <input type="text" class="form-control form-control-lg" name="editsub_id" id="editsub_id">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">ชื่อวิชา</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control form-control-lg" name="editsub_name" id="editsub_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">สถานะ</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control  form-control-lg" id="editsub_status" name="editsub_status">
+                                        <option>ปิด</option>
+                                        <option>เปิด</option>
+                                    </select>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                    <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                                </div>
+                        </form>
+                        </div>
+                    </div>
+                    <!--แก้ไข-->
+
+</body>
+
+</html>

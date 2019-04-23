@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>course</title>
+    <%- include('./form/CSS'); -%>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded" style="min-height: 140px;">
+        <!-- Brand/logo -->
+        <p class="navbar-brand" href="#">
+            <img src="/image/User icon.jpg" style="width:140px;">
+        </p>
+
+        <ul class="navbar-nav ml-auto" style="color:white; ">
+            <li>นาย &nbsp; xxxxxxxxxx &nbsp;</li>
+            <li>TYPE &nbsp;</li>
+            <li>Admin &nbsp;</li>
+            <li>
+                <a href="/"><img src="/image/LogOut icon.png" style="width:40px;"></a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <div class="container-fluid" style="width:auto;">
+        <div class="row">
+            <nav class="col-sm-2">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/mainAdmin">หน้าหลัก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageBuilding">จัดการตึก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageStudent">จัดการบุคลากร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">คุมสอบ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">คำร้อง</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageYear">จัดการปีการศึกษา</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/manageSubject">จัดการรายวิชา/คอร์สเรียน</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="col-sm-10">
+                <div class="container">
+                    <h1 style="float: left">รายละเอียดคอร์สเรียน</h1>
+                    <div style="clear: both"></div>
+                    <div style="float: right">
+                        <h5>รหัสวิชา :
+                            <%=course.sub_id.sub_id%>
+                        </h5>
+                        <h5>ชื่อรายวิชา :
+                            <%=course.sub_id.sub_name%>
+                        </h5>
+                        <h5>กลุ่มเรียน :
+                            <%=course.section%>
+                        </h5>
+                    </div>
+                    <div style="float: left;">
+                        <h5>อาจารย์ผู้สอน</h5>
+                        <% for(var i = 0 ; i < course.teacher.length ; i++){%>
+                            <%= course.teacher[i].prefixName %>
+                                <%= course.teacher[i].firstName %>
+                                    <%= course.teacher[i].lastName %>
+                                        <%}%>
+                    </div>
+                    <div style="clear: both"></div>
+                    <hr>
+                    <!--รายชื่อนิสิตในคอร์ส-->
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a class="nav-link active">นิสิตทั้งหมด</a></li>
+                    </ul>
+                    <div style="clear: both"></div>
+                    <div style="height: auto !important; overflow: auto;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td><b>รหัสนิสิต</b></td>
+                                    <td><b>ชื่อ-นามสกุล</b></td>
+                                    <td><b>คณะ</b></td>
+                                    <td><b>สาขา</b></td>
+                                    <td><b>ชั้นปี</b></td>
+                                    <td><b>สาย</b></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i=0; i < course.student.length ; i++) {
+                                    %>
+                                    <tr>
+                                        <td>
+                                            <%= course.student[i].studentId %>
+                                        </td>
+                                        <td>
+                                            <%= course.student[i].prefixName %>
+                                                <%= course.student[i].firstName %>
+                                                    <%= course.student[i].lastName %>
+                                        </td>
+                                        <td>
+                                            <%= course.student[i].faculty %>
+                                        </td>
+                                        <td>
+                                            <%= course.student[i].major %>
+                                        </td>
+                                        <td>
+                                            <%= course.student[i].year %>
+                                        </td>
+                                        <td>
+                                            <%= course.student[i].branch %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--รายชื่อนิสิตในคอร์ส-->
+
+                    <hr>
+
+                    <!--ตารางสอบ-->
+                    <button style="float: right" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
+                เพิ่มการสอบ
+            </button>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a class="nav-link active">รายการสอบ</a></li>
+                    </ul>
+                    <div style="clear: both"></div>
+                    <div style="height: auto !important; overflow: auto;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td><b>ช่วงสอบ</b></td>
+                                    <td><b>วันที่</b></td>
+                                    <td><b>เวลาเริ่ม</b></td>
+                                    <td><b>เวลาสิ้นสุด</b></td>
+                                    <td><b>สถานะ</b></td>
+                                    <td><b>จัดการห้องสอบ</b></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i=0; i < course.exam.length ; i++) {
+                                %>
+                                    <tr>
+                                        <td>
+                                            <%= course.exam[i].season %>
+                                        </td>
+                                        <td>
+                                            <%= course.exam[i].date %>
+                                        </td>
+                                        <td>
+                                            <%= course.exam[i].timeStart %>
+                                        </td>
+                                        <td>
+                                            <%= course.exam[i].timeFinish %>
+                                        </td>
+                                        <td>
+                                            <%= course.exam[i].status %>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn btn-primary">จัดการห้องสอบ</button>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--ตารางสอบ-->
+
+    </div>
+    <!--<div class="container">-->
+
+
+    </div>
+    <!--<div class="col-sm-10">-->
+
+    <div>
+        <!--modal เพิ่ม-->
+    </div><!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">เพิ่มการสอบ</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form method="POST" action="/manageCourse/courseInfo/addExam/<%=course._id%>">
+
+                        <div class="form-group row">
+                            <label for="colFormLabelSm"
+                                class="col-sm-2 col-form-label col-form-label-lg">ช่วงสอบ</label>
+                            <div class="col-sm-10">
+                                <select required name="season" class="form-control">
+                                    <option>กลางภาค</option>
+                                    <option>ปลายภาค</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="colFormLabelSm"
+                                class="col-sm-2 col-form-label col-form-label-lg">วันที่สอบ</label>
+                            <div class="col-sm-10">
+                                <input required type="date" class="form-control form-control-lg" name="date">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="colFormLabelSm"
+                                class="col-sm-2 col-form-label col-form-label-lg">เวลาเริ่ม</label>
+                            <div class="col-sm-10">
+                                <input required type="text" class="form-control form-control-lg" name="timeStart">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="colFormLabelSm"
+                                class="col-sm-2 col-form-label col-form-label-lg">เวลาสิ้นสุด</label>
+                            <div class="col-sm-10">
+                                <input required type="text" class="form-control form-control-lg" name="timeFinish">
+                            </div>
+                        </div>
+
+                        <input readonly required type="text" class="form-control form-control-lg" name="status"
+                            value="รอดำเดินการ" style="display: none">
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                            <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <!-- Modal footer -->
+
+
+
+            </div>
+        </div>
+    </div>
+    <!--modal เพิ่ม-->
+
+</body>
+
+</html>

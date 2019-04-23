@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <%- include('./form/CSS'); -%>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded" style="min-height: 140px;">
+        <!-- Brand/logo -->
+        <p class="navbar-brand" href="#">
+            <img src="/image/User icon.jpg" style="width:140px;">
+        </p>
+
+        <ul class="navbar-nav ml-auto" style="color:white; ">
+            <li>นาย &nbsp; xxxxxxxxxx &nbsp;</li>
+            <li>TYPE &nbsp;</li>
+            <li>Admin &nbsp;</li>
+            <li>
+                <a href="/"><img src="/image/LogOut icon.png" style="width:40px;"></a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <div class="container-fluid" style="width:auto;">
+        <div class="row">
+            <nav class="col-sm-2">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/mainAdmin">หน้าหลัก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageBuilding">จัดการตึก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/manageStudent">จัดการบุคลากร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">คุมสอบ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">คำร้อง</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageYear">จัดการปีการศึกษา</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageSubject">จัดการรายวิชา/คอร์สเรียน</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="col-sm-10">
+                <div class="container">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a class="nav-link" href="/manageStudent">จัดการนิสิต</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="/manageStaff">จัดการเจ้าหน้าที่</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/manageTeacher">จัดการอาจารย์</a></li>
+                    </ul>
+                    <button style="float: right;" type="submit" class="btn btn-success" data-toggle="modal" data-toggle="modal" data-target=".addStaffModal">เพิ่ม</button>
+                    <h4>จัดการจ้าหน้าที่</h4>
+                    <div style="clear: both"></div>
+                    <div style="height: 400px !important; overflow: auto;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td><b>ชื่อ-นามสกุล</b></td>
+                                    <td><b>คณะ</b></td>
+                                    <td><b>สาขา</b></td>
+                                    <td><b>ตำแหน่ง</b></td>
+                                    <td><b>แก้ไข</b></td>
+                                    <td><b>ลบ</b></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i=0; i < person.length; i++) { %>
+
+                                    <tr>
+                                        <td>
+                                            <%= person[i].prefixName %>
+                                                <%= person[i].firstName %>
+                                                    <%= person[i].lastName %>
+                                        </td>
+                                        <td>
+                                            <%= person[i].faculty %>
+                                        </td>
+                                        <td>
+                                            <%= person[i].major %>
+                                        </td>
+                                        <td>
+                                            <%= person[i].position %>
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-toggle="modal" data-target=".editStaffModal" onclick="editStaff('<%= person[i]._id %>','<%= person[i].username %>','<%= person[i].password %>','<%= person[i].uType %>','<%= person[i].prefixName %>','<%= person[i].firstName %>','<%= person[i].lastName %>','<%= person[i].faculty %>','<%= person[i].major %>','<%= person[i].position %>')">แก้ไข</button>
+                                        </td>
+                                        <td><a href="manageStaff/delete/<%= person[i]._id %>" class="btn btn-danger">ลบ</a></td>
+                                    </tr>
+
+                                    <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div>
+        <!-- Modal เพิ่ม -->
+        <div class="modal fade addStaffModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-xl" role="document">
+                <form action="manageStaff/create" method="post" id="formcreate">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addStaffModal">
+                                เพิ่มเจ้าหน้าที่</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="modal-title" id="addStaffModal">
+                                ข้อมูลuser</h5><br>
+
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">username</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="username" id="username">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">password</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="uType" id="uType" style="display: none" value="staff">
+                                    <input type="password" class="form-control form-control-lg" name="password" id="password">
+                                </div>
+                            </div>
+                            <hr>
+                            <h5 class="modal-title" id="addStaffModal">
+                                ข้อมูลส่วนตัว</h5><br>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">คำนำหน้าชื่อ</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control  form-control-lg" id="prefixName" name="prefixName">
+                                      <option>นาย</option>
+                                      <option>นางสาว</option>
+                                      <option>นาง</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">ชื่อ</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="firstName" id="firstName">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">นามสกุล</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="lastName" id="lastName">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">คณะ</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="faculty" id="faculty">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">สาขา</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="major" id="major">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">ตำแหน่ง</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="position" id="position">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                            <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                        </div>
+                </form>
+                </div>
+            </div>
+            <!--เพิ่ม-->
+        </div>
+
+
+        <!-- Modal แก้ไข -->
+        <div class="modal fade editStaffModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-xl" role="document">
+                <form action="manageStaff/editStaff" method="post" id="formedit">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editStaffModal">
+                                แก้ไขเจ้าหน้าที่</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="modal-title" id="editStaffModal">
+                                ข้อมูลuser</h5><br>
+
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">username</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="editusername" id="editusername">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">password</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="_id" id="editStaffId" style="display: none">
+                                    <input type="text" name="edituType" id="edituType" style="display: none" value="staff">
+                                    <input type="password" class="form-control form-control-lg" name="editpassword" id="editpassword">
+                                </div>
+                            </div>
+                            <hr>
+                            <h5 class="modal-title" id="editStaffModal">
+                                ข้อมูลส่วนตัว</h5><br>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">คำนำหน้าชื่อ</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control  form-control-lg" id="editprefixName" name="editprefixName">
+                                      <option>นาย</option>
+                                      <option >นางสาว</option>
+                                      <option >นาง</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">ชื่อ</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="editfirstName" id="editfirstName">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">นามสกุล</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="editlastName" id="editlastName">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">คณะ</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="editfaculty" id="editfaculty">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">สาขา</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="editmajor" id="editmajor">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">ตำแหน่ง</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="editposition" id="editposition">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                            <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                        </div>
+                </form>
+                </div>
+            </div>
+            <!--แก้ไข-->
+
+
+            <script type="text/javascript">
+                var editStaff = (_id, username, password, uType, prefixName, firstName, lastName, faculty, major, position) => {
+                    _id: $('#editStaffId').val(_id)
+                    username: $('#editusername').val(username)
+                    password: $('#editpassword').val(password)
+                    uType: $('#edituType').val(uType)
+                    prefixName: $('#editprefixName').val(prefixName)
+                    firstName: $('#editfirstName').val(firstName)
+                    lastName: $('#editlastName').val(lastName)
+                    faculty: $('#editfaculty').val(faculty)
+                    major: $('#editmajor').val(major)
+                    position: $('#editposition').val(position)
+                }
+            </script>
+
+</body>
+
+</html>

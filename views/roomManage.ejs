@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <%- include('./form/CSS'); -%>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded" style="min-height: 140px;">
+        <!-- Brand/logo -->
+        <p class="navbar-brand" href="#">
+            <img src="/image/User icon.jpg" style="width:140px;">
+        </p>
+
+        <ul class="navbar-nav ml-auto" style="color:white; ">
+            <li>นาย &nbsp; xxxxxxxxxx &nbsp;</li>
+            <li>TYPE &nbsp;</li>
+            <li>Admin &nbsp;</li>
+            <li>
+                <a href="/"><img src="/image/LogOut icon.png" style="width:40px;"></a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <div class="container-fluid" style="width:auto;">
+        <div class="row">
+            <nav class="col-sm-2">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/mainAdmin">หน้าหลัก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/manageBuilding">จัดการตึก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageStudent">จัดการบุคลากร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">คุมสอบ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">คำร้อง</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageYear">จัดการปีการศึกษา</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageSubject">จัดการรายวิชา/คอร์สเรียน</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="col-sm-10">
+                <div class="container">
+
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a class="nav-link active" href="/manage/building/room">จัดการตึก</a></li>
+                    </ul>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <td><b>ชื่อห้อง</b></td>
+                                <td><b>ชั้น</b></td>
+                                <td><b>ห้อง</b></td>
+                                <td><b>แก้ไข</b></td>
+                                <td><b>ลบ</b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <h1>
+                                <%= building._id %>
+                            </h1>
+                            <h5>
+                                <%= building.room.length %>
+                            </h5>
+                            <% for(var i=0; i < building.room.length ; i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= building.room[i].room_name %>
+                                    </td>
+                                    <td>
+                                        <%= building.room[i].floor_room %>
+                                    </td>
+                                    <td><a href="" class="btn btn-primary">ตรวจสอบ</a></td>
+                                    <td><a href="" class="btn btn-primary">Edit</a></td>
+                                    <td><a href="/manage/building/deleteRoom/<%= building.room[i]._id %>" class="btn btn-danger">Delete</a></td>
+                                </tr>
+
+                                <% } %>
+
+                        </tbody>
+                    </table>
+                    <a href="#" class="btn btn-success" data-toggle="modal" data-toggle="modal" data-target=".AddRoom">เพิ่ม</a>
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+        <ul style="width:150px">
+            <li>
+                &nbsp;
+            </li>
+        </ul>
+    </nav>
+    <!-- Modal เพิ่ม -->
+    <div class="modal fade AddRoom" tabindex="-1" role="dialog" aria-labelledby="AddRoom" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <form action="/manage/building/addRoom/<%= building._id %>" method="post">
+                <!--อันนี้แก้ managecar-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="AddRoom">
+                            เพิ่มห้อง</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group row">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">ชื่อห้อง</label>
+                            <div class="col-sm-10">
+                                <!-- <input type="text" name="_id" id="IDbuildingName" style="display: none"> -->
+                                <input type="text" class="form-control form-control-lg" name="roomName" id="roomName">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">ชั้นที่</label>
+                            <div class="col-sm-10">
+                                <!-- <input type="text" name="_id" id="IDbuildingName" style="display: none"> -->
+                                <input type="text" class="form-control form-control-lg" name="floor" id="floor">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">เเถว</label>
+                        <div class="col-sm-10">
+                            <!-- <input type="text" name="_id" id="IDbuildingName" style="display: none"> -->
+                            <input type="text" class="form-control form-control-lg" name="column" id="column">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">หลัก</label>
+                        <div class="col-sm-10">
+                            <!-- <input type="text" name="_id" id="IDbuildingName" style="display: none"> -->
+                            <input type="text" class="form-control form-control-lg" name="row" id="row">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                    </div>
+            </form>
+            </div>
+        </div>
+        <!--เพิ่ม-->
+</body>
+
+</html>

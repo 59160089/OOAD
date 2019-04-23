@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Teacher Info</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Teacher Info</h1>
+        <form >
+            <div class="form-group">
+                <label for="">ชื่อผู้ใช้</label> <input type="text" class="form-control" name="username"
+                    value="<%= person.username %>" readonly>
+            </div>
+            <div class="form-group">
+                <label for="">รหัสผ่าน</label><input type="text" class="form-control" name="password"
+                    value="<%= person.password %>" readonly>
+            </div>
+
+            <div class="form-group">
+                    <label for="">คำนำหน้าชื่อ</label> 
+                    <input type="text" class="form-control" name="lastName" value="<%= person.prefixName %>" readonly>
+            </div>
+
+            <div class="form-group">
+                    <label for="">ชื่อ</label>  <input type="text" class="form-control" name="firstName" value="<%= person.firstName %>" readonly>
+            </div>
+            <div class="form-group">
+                    <label for="">นามสกุล</label>   <input type="text" class="form-control" name="lastName" value="<%= person.lastName %>" readonly>
+            </div>
+            <div class="form-group">
+                    <label for="">คณะ</label>  <input type="text" class="form-control" name="faculty" value="<%= person.faculty %>" readonly>
+            </div>
+            <div class="form-group">
+                    <label for="">สาขา</label>  <input type="text" class="form-control" name="major" value="<%= person.major %>" readonly>
+            </div>
+            <div class="form-group">
+                    <label for="">ตำแหน่ง</label>  <input type="text" class="form-control" name="position" value="<%= person.position %>" readonly>
+            </div>
+
+            <a href="/manageTeacher">
+                <button type="button" class="btn btn-info float-right">ย้อนกลับ</button>
+            </a>
+    </div>
+    </form>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <%- include('./form/CSS'); -%>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded" style="min-height: 90px;">
+        <!-- Brand/logo -->
+        <p class="navbar-brand" href="#">
+            <img src="/image/User icon.jpg" style="width:90px;">
+        </p>
+
+        <ul class="navbar-nav ml-auto" style="color:white; ">
+            <li>นาย &nbsp; xxxxxxxxxx &nbsp;</li>
+            <li>TYPE &nbsp;</li>
+            <li>Admin &nbsp;</li>
+            <li>
+                <a href="/"><img src="/image/LogOut icon.png" style="width:20px;"></a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <div class="container-fluid" style="width:auto;">
+        <div class="row">
+            <nav class="col-sm-2">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/mainAdmin">หน้าหลัก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/manageBuilding">จัดการตึก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageStudent">จัดการบุคลากร</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">คุมสอบ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">คำร้อง</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageYear">จัดการปีการศึกษา</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageSubject">จัดการรายวิชา/คอร์สเรียน</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="col-sm-10">
+                <div class="container">
+                    <button style="float: right;" type="submit" class="btn btn-success" data-toggle="modal" data-toggle="modal" data-target=".addBuildingModal">เพิ่ม</button>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a class="nav-link active" href="/manageStudent">จัดการตึก</a></li>
+                    </ul>
+                    <div style="clear: both"></div>
+                    <div style="height: 400px !important; overflow: auto;">
+                        <table class="table table-striped" id="sampleTable">
+                            <thead>
+                                <tr>
+                                    <td><b>ชื่อตึก</b></td>
+                                    <td><b>จำนวนชั้น</b></td>
+                                    <td><b>จัดการห้อง</b></td>
+                                    <td><b>แก้ไข</b></td>
+                                    <td><b>ลบ</b></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i=0; i < building.length ; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <%= building[i].buildingName %>
+                                        </td>
+                                        <td>
+                                            <%= building[i].floor %>
+                                        </td>
+                                        <td><a href="manageBuilding/room/<%= building[i]._id %>" class="btn btn-primary">จัดการห้อง</a></td>
+                                        <td>
+                                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-toggle="modal" data-target=".editBuildingModal" onclick="editbuild('<%= building[i]._id %>','<%= building[i].buildingName %>','<%= building[i].floor %>')">แก้ไข</button>
+                                        </td>
+                                        <td><a href="manageBuilding/delete/<%= building[i]._id %>" class="btn btn-danger">ลบ</a></td>
+                                    </tr>
+
+                                    <% } %>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <!-- Modal เพิ่ม -->
+        <div class="modal fade addBuildingModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-xl" role="document">
+                <form action="manageBuilding/create" method="post" id="formcreate">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addBuildingModal">
+                                เพิ่มตึก</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">ชื่อตึก</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="buildingName" id="buildingName">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">จำนวนชั้น</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="floor" id="floor">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                            <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                        </div>
+                </form>
+                </div>
+            </div>
+            <!--เพิ่ม-->
+        </div>
+
+        <!-- Modal แก้ไข -->
+        <div class="modal fade editBuildingModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-xl" role="document">
+                <form action="manageBuilding/updateBuilding" method="post" id="formedit">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editBuildingModal">
+                                แก้ไขตึก</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">ชื่อตึก</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="_id" id="editid" style="display: none">
+                                    <input type="text" class="form-control form-control-lg" name="editbuildingName" id="editbuildingName">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-lg">จำนวนชั้น</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control form-control-lg" name="editfloor" id="editfloor">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                            <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                        </div>
+                </form>
+                </div>
+            </div>
+            <!--แก้ไข-->
+
+
+
+            <script type="text/javascript">
+                var editbuild = (_id, buildingName, floor) => {
+                    _id: $('#editid').val(_id)
+                    buildingName: $('#editbuildingName').val(buildingName)
+                    floor: $('#editfloor').val(floor)
+
+                }
+            </script>
+</body>
+
+</html>
