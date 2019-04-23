@@ -7,10 +7,10 @@ const Student = require('../models/modelStudent')
 const Subject = require('../models/modelSubject')
 const Exam = require('../models/modelExam')
 
-router.route('/:_id').get(function(req, res) {
+router.route('/:_id').get(function (req, res) {
     //_id = subjectId
     Subject.findById(req.params._id, (err, sub) => {
-        Course.find({ sub_id: req.params._id }, function(err, course) {
+        Course.find({ sub_id: req.params._id }, function (err, course) {
             if (err) {
                 console.log(err)
             } else {
@@ -57,7 +57,7 @@ router.get('/teacherManage/addTeacher/:idTeacher/:courseId', (req, res) => {
             // console.log(`Teacher : ${teacher}`)
             var arrCourse = teacher.course
             arrCourse.push(req.params.courseId)
-                // console.log(arrCourse)
+            // console.log(arrCourse)
             teacher.course = arrCourse
             teacher.save()
             res.redirect(`/manageCourse/teacherManage/${req.params.courseId}`)
@@ -106,14 +106,14 @@ router.get('/teacherManage/deleteTeacher/:idTeacher/:courseId', (req, res) => {
 
 //จัดการนิสิต
 router.get('/studentManage/:courseId', (req, res) => {
-        Student.find({ uType: 'student' }, (err, stu) => {
-            Course.findById(req.params.courseId, (err, course) => {
-                //console.log(course)
-                res.render('courseStudentManage', { person: stu, course: course })
-            }).populate(['sub_id', 'student'])
-        })
+    Student.find({ uType: 'student' }, (err, stu) => {
+        Course.findById(req.params.courseId, (err, course) => {
+            //console.log(course)
+            res.render('courseStudentManage', { person: stu, course: course })
+        }).populate(['sub_id', 'student'])
     })
-    //เพิ่มนิสิตเข้าคอร์ส
+})
+//เพิ่มนิสิตเข้าคอร์ส
 router.get('/studentManage/addStudent/:idStudent/:courseId', (req, res) => {
     console.log(`studentId : ${req.params.idStudent}`)
     console.log(`courseId : ${req.params.courseId}`)
@@ -170,7 +170,7 @@ router.get('/studentManage/deleteStudent/:idStudent/:courseId', (req, res) => {
 })
 
 
-router.route('/addCourse').post(function(req, res) {
+router.route('/addCourse').post(function (req, res) {
 
     console.log(req.body)
 
@@ -193,7 +193,7 @@ router.route('/addCourse').post(function(req, res) {
 
 })
 
-router.route('/post').post(function(req, res) {
+router.route('/post').post(function (req, res) {
     const course = new Course(req.body)
     course.save().then(course => {
         res.redirect('/manageCourse')
@@ -202,10 +202,36 @@ router.route('/post').post(function(req, res) {
     })
 })
 
+//จัดการห้องสอบ
+router.route('/manageTestRoom/:examId').get(function (req, res) {
+    Exam.findById(req.params.examId, (err, exam) => {
+        res.render('manageTestRoom', { exam: exam })
+    })
+})
+
+//ลบการสอบ
+router.route('/deleteExam/:examId/:courseId').get(function (req, res) {
+    Exam.findById(req.params.examId, (err, exam) => {
+        Course.findById(req.params.courseId, (err, course) => {
+            var arrExam = course.exam
+            for (let i = 0; i < arrExam.length; i++) {
+                if (arrExam[i] == req.params.examId) {
+                    arrExam.splice(i, 1)
+                }
+            }
+            course.exam = arrExam
+            course.save()
+            exam.remove()
+            res.redirect(`/manageCourse/courseInfo/${req.params.courseId}`)
+        })
+        /* exam.remove()
+         res.redirect(`/manageCourse/courseInfo/${req.params.courseId}`)*/
+    })
+})
 
 
-router.route('/update/:id').post(function(req, res) {
-    Course.findById(req.params.id, function(err, course) {
+router.route('/update/:id').post(function (req, res) {
+    Course.findById(req.params.id, function (err, course) {
         if (!course)
             return next(new Error('Could not load Document'))
         else {
@@ -215,8 +241,8 @@ router.route('/update/:id').post(function(req, res) {
             course.section = req.body.section
             course.year = req.body.year
             course.save().then(course => {
-                    res.redirect('/manage/course')
-                })
+                res.redirect('/manage/course')
+            })
                 .catch(err => {
                     res.status(400).send("unable to update the database")
                 })
@@ -224,7 +250,7 @@ router.route('/update/:id').post(function(req, res) {
     })
 })
 
-router.route('/delete/:id/:sub_id').get(function(req, res) {
+router.route('/delete/:id/:sub_id').get(function (req, res) {
     console.log(req.params.id)
     console.log(req.params.sub_id)
     Course.findById(req.params.id, (err, course) => {

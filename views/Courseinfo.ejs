@@ -74,10 +74,10 @@
                     <div style="float: left;">
                         <h5>อาจารย์ผู้สอน</h5>
                         <% for(var i = 0 ; i < course.teacher.length ; i++){%>
-                            <%= course.teacher[i].prefixName %>
-                                <%= course.teacher[i].firstName %>
-                                    <%= course.teacher[i].lastName %>
-                                        <%}%>
+                        <%= course.teacher[i].prefixName %>
+                        <%= course.teacher[i].firstName %>
+                        <%= course.teacher[i].lastName %>
+                        <%}%>
                     </div>
                     <div style="clear: both"></div>
                     <hr>
@@ -101,30 +101,30 @@
                             <tbody>
                                 <% for(var i=0; i < course.student.length ; i++) {
                                     %>
-                                    <tr>
-                                        <td>
-                                            <%= course.student[i].studentId %>
-                                        </td>
-                                        <td>
-                                            <%= course.student[i].prefixName %>
-                                                <%= course.student[i].firstName %>
-                                                    <%= course.student[i].lastName %>
-                                        </td>
-                                        <td>
-                                            <%= course.student[i].faculty %>
-                                        </td>
-                                        <td>
-                                            <%= course.student[i].major %>
-                                        </td>
-                                        <td>
-                                            <%= course.student[i].year %>
-                                        </td>
-                                        <td>
-                                            <%= course.student[i].branch %>
-                                        </td>
-                                    </tr>
-                                    <% } %>
-                            </tbody>
+                        <tr>
+                            <td>
+                                <%= course.student[i].studentId %>
+                            </td>
+                            <td>
+                                <%= course.student[i].prefixName %>
+                                <%= course.student[i].firstName %>
+                                <%= course.student[i].lastName %>
+                            </td>
+                            <td>
+                                <%= course.student[i].faculty %>
+                            </td>
+                            <td>
+                                <%= course.student[i].major %>
+                            </td>
+                            <td>
+                                <%= course.student[i].year %>
+                            </td>
+                            <td>
+                                <%= course.student[i].branch %>
+                            </td>
+                        </tr>
+                        <% } %>
+                        </tbody>
                         </table>
                     </div>
                     <!--รายชื่อนิสิตในคอร์ส-->
@@ -132,9 +132,10 @@
                     <hr>
 
                     <!--ตารางสอบ-->
-                    <button style="float: right" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
-                เพิ่มการสอบ
-            </button>
+                    <button style="float: right" type="button" class="btn btn-success" data-toggle="modal"
+                        data-target="#myModal">
+                        เพิ่มการสอบ
+                    </button>
                     <ul class="nav nav-tabs">
                         <li class="nav-item"><a class="nav-link active">รายการสอบ</a></li>
                     </ul>
@@ -149,116 +150,120 @@
                                     <td><b>เวลาสิ้นสุด</b></td>
                                     <td><b>สถานะ</b></td>
                                     <td><b>จัดการห้องสอบ</b></td>
+                                    <td><b>ลบ</b></td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% for(var i=0; i < course.exam.length ; i++) {
                                 %>
-                                    <tr>
-                                        <td>
-                                            <%= course.exam[i].season %>
-                                        </td>
-                                        <td>
-                                            <%= course.exam[i].date %>
-                                        </td>
-                                        <td>
-                                            <%= course.exam[i].timeStart %>
-                                        </td>
-                                        <td>
-                                            <%= course.exam[i].timeFinish %>
-                                        </td>
-                                        <td>
-                                            <%= course.exam[i].status %>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-primary">จัดการห้องสอบ</button>
-                            </td>
-                        </tr>
-                        <% } %>
-                    </tbody>
-                </table>
+                                <tr>
+                                    <td>
+                                        <%= course.exam[i].season %>
+                                    </td>
+                                    <td>
+                                        <%= course.exam[i].date %>
+                                    </td>
+                                    <td>
+                                        <%= course.exam[i].timeStart %>
+                                    </td>
+                                    <td>
+                                        <%= course.exam[i].timeFinish %>
+                                    </td>
+                                    <td>
+                                        <%= course.exam[i].status %>
+                                    </td>
+                                    <td>
+                                        <a href="/manageCourse/manageTestRoom/<%=course.exam[i]._id%>" class="btn btn-primary">จัดการห้องสอบ</button>
+                                    </td>
+                                    <td>
+                                        <a href="/manageCourse/deleteExam/<%=course.exam[i]._id%>/<%=course._id%>" class="btn btn-danger">ลบ</button>
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--ตารางสอบ-->
+
+            </div>
+            <!--<div class="container">-->
+
+
+        </div>
+        <!--<div class="col-sm-10">-->
+
+        <div>
+            <!--modal เพิ่ม-->
+        </div><!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">เพิ่มการสอบ</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form method="POST" action="/manageCourse/courseInfo/addExam/<%=course._id%>">
+
+                            <div class="form-group row">
+                                <label for="colFormLabelSm"
+                                    class="col-sm-2 col-form-label col-form-label-lg">ช่วงสอบ</label>
+                                <div class="col-sm-10">
+                                    <select required name="season" class="form-control">
+                                        <option>กลางภาค</option>
+                                        <option>ปลายภาค</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="colFormLabelSm"
+                                    class="col-sm-2 col-form-label col-form-label-lg">วันที่สอบ</label>
+                                <div class="col-sm-10">
+                                    <input required type="date" class="form-control form-control-lg" name="date">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="colFormLabelSm"
+                                    class="col-sm-2 col-form-label col-form-label-lg">เวลาเริ่ม</label>
+                                <div class="col-sm-10">
+                                    <input required type="text" class="form-control form-control-lg" name="timeStart">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="colFormLabelSm"
+                                    class="col-sm-2 col-form-label col-form-label-lg">เวลาสิ้นสุด</label>
+                                <div class="col-sm-10">
+                                    <input required type="text" class="form-control form-control-lg" name="timeFinish">
+                                </div>
+                            </div>
+
+                            <input readonly required type="text" class="form-control form-control-lg" name="status"
+                                value="รอดำเดินการ" style="display: none">
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <!-- Modal footer -->
+
+
+
+                </div>
             </div>
         </div>
-        <!--ตารางสอบ-->
-
-    </div>
-    <!--<div class="container">-->
-
-
-    </div>
-    <!--<div class="col-sm-10">-->
-
-    <div>
         <!--modal เพิ่ม-->
-    </div><!-- The Modal -->
-    <div class="modal" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">เพิ่มการสอบ</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <form method="POST" action="/manageCourse/courseInfo/addExam/<%=course._id%>">
-
-                        <div class="form-group row">
-                            <label for="colFormLabelSm"
-                                class="col-sm-2 col-form-label col-form-label-lg">ช่วงสอบ</label>
-                            <div class="col-sm-10">
-                                <select required name="season" class="form-control">
-                                    <option>กลางภาค</option>
-                                    <option>ปลายภาค</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="colFormLabelSm"
-                                class="col-sm-2 col-form-label col-form-label-lg">วันที่สอบ</label>
-                            <div class="col-sm-10">
-                                <input required type="date" class="form-control form-control-lg" name="date">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="colFormLabelSm"
-                                class="col-sm-2 col-form-label col-form-label-lg">เวลาเริ่ม</label>
-                            <div class="col-sm-10">
-                                <input required type="text" class="form-control form-control-lg" name="timeStart">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="colFormLabelSm"
-                                class="col-sm-2 col-form-label col-form-label-lg">เวลาสิ้นสุด</label>
-                            <div class="col-sm-10">
-                                <input required type="text" class="form-control form-control-lg" name="timeFinish">
-                            </div>
-                        </div>
-
-                        <input readonly required type="text" class="form-control form-control-lg" name="status"
-                            value="รอดำเดินการ" style="display: none">
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                            <button type="submit" class="btn btn-primary">ยืนยัน</button>
-                        </div>
-                    </form>
-
-                </div>
-
-                <!-- Modal footer -->
-
-
-
-            </div>
-        </div>
-    </div>
-    <!--modal เพิ่ม-->
 
 </body>
 
