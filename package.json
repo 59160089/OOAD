@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "nodemon --exec mocha -R min",
     "start": "nodemon server.js"
   },
   "author": "KRUNAL LATHIYA",
@@ -15,6 +16,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "jquery": "^3.3.1",
+    "mocha": "^6.1.4",
     "mongoose": "^5.4.19",
     "nodemon": "^1.18.10"
   }

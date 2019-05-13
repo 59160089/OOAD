@@ -73,10 +73,13 @@
                     </div>
                     <div style="float: left;">
                         <h5>อาจารย์ผู้สอน</h5>
-                        <% for(var i = 0 ; i < course.teacher.length ; i++){%>
+                        <% for(let i = 0 ; i < course.teacher.length ; i++){%>
                         <%= course.teacher[i].prefixName %>
                         <%= course.teacher[i].firstName %>
                         <%= course.teacher[i].lastName %>
+                        <% if(i != course.teacher.length -1 ){ %>
+                            ,
+                       <% } %>
                         <%}%>
                     </div>
                     <div style="clear: both"></div>
