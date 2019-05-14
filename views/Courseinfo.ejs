@@ -163,7 +163,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for(var i=0; i < course.exam.length ; i++) {
+                                <% for(let i=0; i < course.exam.length ; i++) {
                                 %>
                                 <tr>
                                     <td>
@@ -180,6 +180,15 @@
                                     </td>
                                     <td>
                                         <%= course.exam[i].status %>
+                                        <%
+                                        let status = 'พร้อม'
+                                        for (let j = 0 ; course.exam[i].score.length ; j++ ){
+                                            if(course.exam[i].score[j].seatStatus == 'null'){
+                                                status = 'รอดำเดินการ'
+                                                break
+                                            }
+                                        }
+                                        %>
                                     </td>
                                     <td>
                                         <a href="/manageCourse/manageTestRoom/<%=course.exam[i]._id%>"

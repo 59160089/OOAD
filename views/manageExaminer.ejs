@@ -59,10 +59,10 @@
             <div class="col-sm-10">
                 <div class="container">
 
-                    <!--ห้องสอบที่ว่าง-->
+                    <!--ผู้คุมสอบที่ว่าง-->
 
                     <ul class="nav nav-tabs">
-                        <li class="nav-item"><a class="nav-link active">ห้องสอบที่ว่าง</a></li>
+                        <li class="nav-item"><a class="nav-link active">ผู้คุมสอบทั้งหมด</a></li>
                     </ul>
                     <div style="clear: both"></div>
                     <div style="height: auto !important; overflow: auto;">
@@ -70,49 +70,35 @@
                             <thead>
                                 <tr>
                                     <!--<td><b>ชื่อตึก</b></td>-->
-                                    <td><b>ชื่อห้องสอบ</b></td>
-                                    <td><b>ชั้น</b></td>
-                                    <td><b>จำนวนที่นั่งทั้งหมด</b></td>
-                                    <td><b>จำนวนที่นั่งว่าง</b></td>
+                                    <td><b>ชื่อ-สกุล</b></td>
+                                    <!--prefixName firstName lastName-->
+                                    <td><b>ตำแหน่ง</b></td>
+                                    <!--uType-->
                                     <td><b>เลือก</b></td>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for(var i=0; i < room.length ; i++) {
+                                <% for(let i=0; i < examiner.length ; i++) {
                                 %>
                                 <tr>
-                                    <!--   <td>
-                                        <%= room[i].building.buildingName %>
-                                    </td>-->
                                     <td>
-                                        <%= room[i].name %>
+                                        <%= examiner[i].prefixName %> <%= examiner[i].firstName %> -
+                                        <%= examiner[i].lastName %>
                                     </td>
                                     <td>
-                                        <%= room[i].floor %>
-                                    </td>
-                                    <td>
-                                        <%=room[i].seat.length%>
+                                        <%= examiner[i].uType %>
                                     </td>
 
-                                    <% var emptySeat = 0 
-                                    for (let j = 0 ;  j < room[i].seat.length ; j++ ) {
-                                        if(room[i].seat[j].student == null) {
-                                            emptySeat++
-                                        }
-                                    } %>
-                                    <td> <%= emptySeat %></td>
-
                                     <td>
-                                        <a href="/manageCourse/manageTestRoom/addTestRoom/<%=room[i]._id%>/<%=exam._id%>"
-                                            class="btn btn-primary">เลือก</button>
+                                        <a href="#" class="btn btn-primary">เลือก</button>
                                     </td>
                                 </tr>
                                 <% } %>
 
                             </tbody>
                         </table>
-                        <!--ห้องสอบที่ว่าง-->
-                        <!--ห้องสอบที่เลือก-->
+                        <!--ผู้คุมสอบที่ว่าง-->
+                        <!--ผู้คุมสอบที่เลือก-->
                         <ul class="nav nav-tabs">
                             <li class="nav-item"><a class="nav-link active">ห้องสอบที่เลือก</a></li>
                         </ul>
@@ -122,44 +108,27 @@
                                 <thead>
                                     <tr>
                                         <!--<td><b>ชื่อตึก</b></td>-->
-                                        <td><b>ชื่อห้องสอบ</b></td>
-                                        <td><b>ชั้น</b></td>
-                                        <td><b>จำนวนที่นั่งทั้งหมด</b></td>
-                                        <td><b>จำนวนที่นั่งว่าง</b></td>
-                                        <td><b>จัดห้องสอบ</b></td>
-                                        <td><b>ลบ</b></td>
+                                        <td><b>ชื่อ-สกุล</b></td>
+                                        <!--prefixName firstName lastName-->
+                                        <td><b>ตำแหน่ง</b></td>
+                                        <!--uType-->
+                                        <td><b>เลือก</b></td>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    <% for(var i=0; i < exam.room.length ; i++) {
-                                %>
+                                    <% for(let i=0; i < examiner.length ; i++) {
+                                    %>
                                     <tr>
-
                                         <td>
-                                            <%= exam.room[i].name %>
+                                            <%= examiner[i].prefixName %> <%= examiner[i].firstName %> -
+                                            <%= examiner[i].lastName %>
                                         </td>
                                         <td>
-                                            <%= exam.room[i].floor %>
-                                        </td>
-                                        <td>
-                                            <%= exam.room[i].seat.length%>
+                                            <%= examiner[i].uType %>
                                         </td>
 
-                                        <% var emptySeat = 0 
-                                    for (let j = 0 ;  j < exam.room[i].seat.length ; j++ ) {
-                                        if(exam.room[i].seat[j].student == null) {
-                                            emptySeat++
-                                        }
-                                    } %>
-                                        <td> <%= emptySeat %></td>
-                                        <td><a href="/manageBuilding/inRoom/<%= exam.room[i]._id%>/<%=exam._id%>"
-                                                class="btn btn-info">จัดห้องสอบ</a></td>
-      
-
                                         <td>
-                                            <a href="/manageCourse/manageTestRoom/deleteTestRoom/<%=exam.room[i]._id%>/<%=exam._id%>"
-                                                class="btn btn-danger">ลบ</button>
+                                            <a href="#" class="btn btn-primary">เลือก</button>
                                         </td>
                                     </tr>
                                     <% } %>
@@ -167,7 +136,7 @@
                                 </tbody>
                             </table>
 
-                            <!--ห้องสอบที่เลือก-->
+                            <!--ผู้คุมสอบที่เลือก-->
 
                         </div>
                     </div>

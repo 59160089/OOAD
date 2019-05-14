@@ -11,8 +11,15 @@ var Room = new Schema({
         student: {
             type: Schema.Types.ObjectId,
             ref: 'modelStudent'
-        }
-    }]
+        },
+        course : {type : Schema.Types.ObjectId , 
+        ref : 'modelCourse'}
+    }] ,
+    examiner : [],
+    building : {
+        type: Schema.Types.ObjectId,
+        ref: 'modelBuilding'
+    }
 }, { collection: 'room' })
 
 module.exports = mongoose.model('room', Room)

@@ -83,38 +83,38 @@ router.route('/addRoom/:id').post(function (req, res) {
 
     for (let i = 0; i < obj.row; i++) {
         for (let j = 0; j < obj.col; j++) {
-            seatArr.push('se')
-           
+            seatArr.push({ no: `${az[i] + (j + 1)}` })
         }
     }
+
     obj.seat = seatArr
-    console.log(seatArr)
 
-    console.log(obj.seat)
-
-    obj.save().then(room => {
-        Building.findById(req.params.id, function (err, building) {
-
-            if (err)
-                console.log(err)
-            obj.save().then(room => {
-
-                // console.log(room)
-                let roomArr = building.room
-
-                roomArr.push(room)
-
-                building.room = roomArr
-
-                building.save().then(buildings => {
-                   // console.log(buildings)
+    Building.findById(req.params.id , (err , building) => {
+        obj.building = building
+        obj.save().then(room => {
+            Building.findById(req.params.id, function (err, building) {
+    
+                if (err)
+                    console.log(err)
+                obj.save().then(room => {
+    
+                    // console.log(room)
+                    let roomArr = building.room
+    
+                    roomArr.push(room)
+    
+                    building.room = roomArr
+    
+                    building.save().then(buildings => {
+                        // console.log(buildings)
+                    })
                 })
+                res.redirect(`/manageBuilding/room/${req.params.id}`)
             })
-            res.redirect(`/manageBuilding/room/${req.params.id}`)
-
         })
-
     })
+
+   
 
 
 })
@@ -156,6 +156,27 @@ router.route('/update/:id').post(function (req, res) {
 
 //จบของตูน---------------------------------------------------
 
+
+// รายละเอียดในห้องสอบ
+
+router.get('/inRoom/:roomId/:examId', (req, res) => {
+    Room.findById(req.params.roomId, (err, room) => {
+        require('../models/modelExam').findById(req.params.examId , (err , exam) => {
+            res.render('inRoom' , {room : room , exam : exam})
+        })
+    }).populate('building')
+
+})
+
+// เคลียร์ที่นั่งสอบทั้งห้อง
+router.get('/clearRoom/:roomId/:buildingId' , (req , res) => {
+    Room.findById(req.params.roomId , (err ,room) => {
+        for (let i = 0 ; i < room.seat.length ; i++ ){
+            room.seat[i].student = null
+            room.seat[i].course = null
+        }
+    })
+})
 
 
 module.exports = router;

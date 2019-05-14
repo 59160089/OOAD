@@ -6,6 +6,7 @@ const Teacher = require('../models/modelTeacher')
 const Student = require('../models/modelStudent')
 const Subject = require('../models/modelSubject')
 const Exam = require('../models/modelExam')
+const Room = require('../models/modelRoom')
 
 router.route('/:_id').get(function (req, res) {
     //_id = subjectId
@@ -204,9 +205,11 @@ router.route('/post').post(function (req, res) {
 
 //จัดการห้องสอบ
 router.route('/manageTestRoom/:examId').get(function (req, res) {
-    Exam.findById(req.params.examId, (err, exam) => {
-        res.render('manageTestRoom', { exam: exam })
-    })
+    Room.find({}, (err, room) => {
+        Exam.findById(req.params.examId, (err, exam) => {
+            res.render('manageTestRoom', { exam: exam, room: room })
+        }).populate('room')
+    }).populate('building')
 })
 
 //ลบการสอบ
@@ -271,16 +274,97 @@ router.get('/courseInfo/:courseId', (req, res) => {
 //เพิ่มการสอบ
 router.post('/courseInfo/addExam/:courseId', (req, res) => {
     var exam = new Exam(req.body)
-    exam.save()
+    console.log(req.body)
     Course.findById(req.params.courseId, (err, course) => {
+        for (let i = 0; i < course.student.length; i++) {
+            exam.score.push({ studentId: course.student[i]._id, point: '0', seatStatus: 'null' })
+        }
+        exam.save()
         var arrExam = course.exam
         arrExam.push(exam)
         course.exam = arrExam
         course.save()
         res.redirect(`/manageCourse/courseInfo/${req.params.courseId}`)
     })
+
 })
 
+//เพิ่มห้องสอบ
+router.get('/manageTestRoom/addTestRoom/:roomId/:examId', (req, res) => {
+
+    require('../models/modelRoom').findById(req.params.roomId, (err, room) => {
+        Exam.findById(req.params.examId, (err, exam) => {
+
+            exam.room.push(room)
+            exam.save().then(result => {
+                res.redirect(`/manageCourse/manageTestRoom/${req.params.examId}`)
+            })
+        })
+    })
+})
+//ลบห้องสอบ
+router.get('/manageTestRoom/deleteTestRoom/:roomId/:examId', (req, res) => {
+
+    Exam.findById(req.params.examId, (err, exam) => {
+        for (let i = 0; i < exam.room.length; i++) {
+            if (exam.room[i]._id == req.params.roomId) {
+                exam.room.splice(i, 1)
+                break
+            }
+        }
+        exam.save().then((result => {
+            res.redirect('/manageCourse/manageTestRoom/' + req.params.examId)
+        }))
+    })
+})
+
+//
+router.get('/autoFillSeat/:examId/:roomId', (req, res) => {
+    let indexSeat = 0
+    Room.findById(req.params.roomId, (err, room) => {
+        require('../models/modelExam').findById(req.params.examId, (err, exam) => {
+
+            /*  //loop ที่นั่งที่ว่างในห้อง
+              for(let i = 0 ;  i < room.seat.length ; i++){
+                  if(room.seat[i].student == null) {
+                      // loop นิสิตที่ยังไม่มีที่นั่ง 
+                      console.log('seat empty')
+                      for(let j = 0 ; j < exam.score.length ; j++){
+                          if(exam.score[j].seatStatus == "null"){
+                              console.log('student seat null')
+                              room.seat[i].student = exam.score[j].student
+                              exam.score[j].seatStatus == room.seat[i].no
+                              break
+                          }
+                      }
+                      break
+                  }
+              }*/
+
+            //loop หานิสิตที่ยังไม่มีที่นั่ง
+            for (let i = 0; i < exam.score.length; i++) {
+                if (exam.score[i].seatStatus == 'null') {
+                    //ยังไม่มีที่นั่ง
+                    for (let j = indexSeat; j < room.seat.length; j++) {
+                        if (room.seat[j].student == null) {
+                            //ที่นั่งว่าง
+                            exam.score[i].seatStatus = room.seat[j].no
+                            room.seat[j].student = exam.score[i].studentId
+                            indexSeat = j++
+                            break
+                        }
+                    }
+                }
+            }
+
+            room.save()
+            exam.save()
+            res.redirect(`/manageBuilding/inRoom/${req.params.roomId}/${req.params.examId}`)
+        })
+
+    })
+
+})
 
 
 

@@ -58,16 +58,17 @@
                 <div class="container">
 
                     <ul class="nav nav-tabs">
-                        <li class="nav-item"><a class="nav-link active" >จัดการห้อง</a></li>
+                        <li class="nav-item"><a class="nav-link active">จัดการห้อง</a></li>
                     </ul>
 
-                    <table class="table table-striped">
+                    <table class="table table-striped" style="text-align: center">
                         <thead>
                             <tr>
                                 <td><b>ชื่อห้อง</b></td>
                                 <td><b>ชั้น</b></td>
-                                <td><b>ห้อง</b></td>
-                                <td><b>แก้ไข</b></td>
+                                <td><b>จำนวนที่นั่งทั้งหมด</b></td>
+                                <td><b>จำนวนที่นั่งว่าง</b></td>
+                                <td><b>เคลียร์ห้อง</b></td>
                                 <td><b>ลบ</b></td>
                             </tr>
                         </thead>
@@ -80,7 +81,18 @@
                                 <td>
                                     <%= building.room[i].floor %>
                                 </td>
-                                <td><a href="" class="btn btn-primary">ตรวจสอบ</a></td>
+                                <td><%= building.room[i].seat.length %></td>
+
+                                <% var emptySeat = 0 
+                                for (let j = 0 ;  j < building.room[i].seat.length ; j++ ) {
+                                    if(building.room[i].seat[j].student == null) {
+                                        emptySeat++
+                                    }
+                                } %>
+
+                                <td> <%= emptySeat %></td>
+                                <td><a href="/manageBuilding/inRoom/<%= building.room[i]._id %>"
+                                        class="btn btn-primary">ตรวจสอบ</a></td>
                                 <td><a href="" class="btn btn-primary">Edit</a></td>
                                 <td><a href="/manageBuilding/deleteRoom/<%= building.room[i]._id %>/<%=building._id%>"
                                         class="btn btn-danger">Delete</a></td>

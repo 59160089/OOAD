@@ -28,14 +28,19 @@ var User = new Schema({
     },
     course: [{
         type: Schema.Types.ObjectId,
-        ref : 'modelCourse'
-    }]
+        ref: 'modelCourse'
+    }],
+    examiner: [{
+        type: Schema.Types.ObjectId,
+        ref: 'modelExam'
+    }
+    ]
     ,
     position: {
         type: String
     }
 }, {
-    collection: 'person'
-})
+        collection: 'person'
+    })
 
 module.exports = mongoose.model('modelTeacher', User);

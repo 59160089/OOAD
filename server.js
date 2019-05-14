@@ -60,8 +60,6 @@ app.get('/mainAdmin', function(req, res) {
     res.render('mainAdmin')
 })
 
-
-
 app.listen(port, function() {
     console.log('Node js Express js Tutorial at port', port)
 })
