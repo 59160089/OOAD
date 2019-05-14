@@ -10,13 +10,11 @@ var Building = new Schema({
         type: Number
     },
     room: [{
-        room_name: String,
-        floor_room: String,
-        row_room: String,
-        column_room: String
+        type: Schema.Types.ObjectId,
+        ref: 'room'
     }]
 }, {
-    collection: 'building'
-})
+        collection: 'building'
+    })
 
 module.exports = mongoose.model('modelBuilding', Building);

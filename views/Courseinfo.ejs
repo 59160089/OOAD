@@ -78,9 +78,15 @@
                         <%= course.teacher[i].firstName %>
                         <%= course.teacher[i].lastName %>
                         <% if(i != course.teacher.length -1 ){ %>
-                            ,
-                       <% } %>
+                        ,
+                        <% } %>
                         <%}%>
+                    </div>
+                    <div style="clear: both"></div>
+                    <!--จัดการนิสิต จัดการอาจารย์-->
+                    <div style="float: right">
+                    <a href="/manageCourse/teacherManage/<%= course._id%>" class="btn btn-info">จัดการอาจารย์</a>
+                        <a href="/manageCourse/studentManage/<%= course._id%>" class="btn btn-info">จัดการนิสิต</a>
                     </div>
                     <div style="clear: both"></div>
                     <hr>
@@ -104,30 +110,30 @@
                             <tbody>
                                 <% for(var i=0; i < course.student.length ; i++) {
                                     %>
-                        <tr>
-                            <td>
-                                <%= course.student[i].studentId %>
-                            </td>
-                            <td>
-                                <%= course.student[i].prefixName %>
-                                <%= course.student[i].firstName %>
-                                <%= course.student[i].lastName %>
-                            </td>
-                            <td>
-                                <%= course.student[i].faculty %>
-                            </td>
-                            <td>
-                                <%= course.student[i].major %>
-                            </td>
-                            <td>
-                                <%= course.student[i].year %>
-                            </td>
-                            <td>
-                                <%= course.student[i].branch %>
-                            </td>
-                        </tr>
-                        <% } %>
-                        </tbody>
+                                <tr>
+                                    <td>
+                                        <%= course.student[i].studentId %>
+                                    </td>
+                                    <td>
+                                        <%= course.student[i].prefixName %>
+                                        <%= course.student[i].firstName %>
+                                        <%= course.student[i].lastName %>
+                                    </td>
+                                    <td>
+                                        <%= course.student[i].faculty %>
+                                    </td>
+                                    <td>
+                                        <%= course.student[i].major %>
+                                    </td>
+                                    <td>
+                                        <%= course.student[i].year %>
+                                    </td>
+                                    <td>
+                                        <%= course.student[i].branch %>
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
                         </table>
                     </div>
                     <!--รายชื่อนิสิตในคอร์ส-->
@@ -176,10 +182,12 @@
                                         <%= course.exam[i].status %>
                                     </td>
                                     <td>
-                                        <a href="/manageCourse/manageTestRoom/<%=course.exam[i]._id%>" class="btn btn-primary">จัดการห้องสอบ</button>
+                                        <a href="/manageCourse/manageTestRoom/<%=course.exam[i]._id%>"
+                                            class="btn btn-primary">จัดการห้องสอบ</button>
                                     </td>
                                     <td>
-                                        <a href="/manageCourse/deleteExam/<%=course.exam[i]._id%>/<%=course._id%>" class="btn btn-danger">ลบ</button>
+                                        <a href="/manageCourse/deleteExam/<%=course.exam[i]._id%>/<%=course._id%>"
+                                            class="btn btn-danger">ลบ</button>
                                     </td>
                                 </tr>
                                 <% } %>
