@@ -78,7 +78,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for(var i=0; i < room.length ; i++) {
+                                <% 
+                                let arrExamRoom = []
+
+                                for(let i = 0 ; i < room.length ; i++){
+                                    arrExamRoom.push(room[i]._id+'')
+                                }
+                                
+                                for(let i=0; i < room.length ; i++) {
+                                    if(!arrExamRoom.includes(room[i]._id+'')){
                                 %>
                                 <tr>
                                     <!--   <td>
@@ -107,7 +115,7 @@
                                             class="btn btn-primary">เลือก</button>
                                     </td>
                                 </tr>
-                                <% } %>
+                                <% }} %>
 
                             </tbody>
                         </table>
@@ -132,7 +140,7 @@
                                 </thead>
                                 <tbody>
 
-                                    <% for(var i=0; i < exam.room.length ; i++) {
+                                    <% for(let i=0; i < exam.room.length ; i++) {
                                 %>
                                     <tr>
 

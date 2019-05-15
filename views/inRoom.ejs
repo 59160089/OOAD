@@ -55,8 +55,20 @@
             <div class="col-sm-10">
                 <div class="container">
                     <div style="float: right">
-                            <a href='#' class="btn btn-primary">เพิ่มผู้คุมสอบ</a>
-                            <a href='/manageCourse/autoFillSeat/<%=exam._id%>/<%=room._id%>' class="btn btn-primary">จัดที่นั่งสอบ</a>
+                        <a href='/manageCourse/manageExaminer/<%=exam._id%>/<%=room._id%>'
+                            class="btn btn-primary">จัดการผู้คุมสอบ</a>
+                        <%
+                        let autoFillSeat = false
+                            for(let i = 0 ; i < exam.score.length ; i++ ){
+                                if(exam.score[i].seatStatus == 'null'){
+                                    autoFillSeat = true
+                                    break
+                                }
+                            }
+                            if(autoFillSeat){%>
+                                <a href='/manageCourse/autoFillSeat/<%=exam._id%>/<%=room._id%>'
+                                    class="btn btn-primary">จัดที่นั่งสอบ</a>        
+                            <%}%>
                     </div>
                     <h5>ตึก : <%= room.building.buildingName %></h5>
                     <h5>ห้อง : <%=room.name%></h5>
@@ -65,7 +77,7 @@
                         ยังไม่มีผู้คุมสอบ
                         <%}%>
                         <% for ( let i = 0  ; i < room.examiner.length ; i++ ){%>
-                        <%=room.examiner[i]%>
+                        <%=room.examiner[i].prefixName%> <%=room.examiner[i].firstName%> <%=room.examiner[i].lastName%>
                         <%if(!(i == room.examiner.length-1)){%>
                         ,
                         <%}%>
@@ -80,17 +92,17 @@
                             for ( let j = 0 ; j < room.row ; j++) {%>
                             <td>
                                 <% if(room.seat[(j * room.col) + i].student == null ) { %>
-                                    <button class="btn-primary">
-                                            <%=room.seat[(j * room.col) + i].no%>
-                                        </button>
+                                <button class="btn-primary">
+                                    <%=room.seat[(j * room.col) + i].no%>
+                                </button>
                                 <%}else {%>
-                                    <button class="btn-danger">
-                                            <%=room.seat[(j * room.col) + i].no%>
-                                        </button>
-                               <%}%>
+                                <button class="btn-danger">
+                                    <%=room.seat[(j * room.col) + i].no%>
+                                </button>
+                                <%}%>
                             </td>
                             <%}%>
-                            %>
+                                %>
                         </tr>
                         <%}%>
                             

@@ -179,16 +179,24 @@
                                         <%= course.exam[i].timeFinish %>
                                     </td>
                                     <td>
-                                        <%= course.exam[i].status %>
+                                       
+
                                         <%
                                         let status = 'พร้อม'
-                                        for (let j = 0 ; course.exam[i].score.length ; j++ ){
+                                        for (let j = 0 ;  j < course.exam[i].score.length ; j++ ){
                                             if(course.exam[i].score[j].seatStatus == 'null'){
                                                 status = 'รอดำเดินการ'
                                                 break
                                             }
+                                            if(course.exam[i].examiner.length == 0 ){
+                                                status = 'รอดำเดินการ'
+                                            }
                                         }
+                                        
                                         %>
+                                        <%= status %>
+
+
                                     </td>
                                     <td>
                                         <a href="/manageCourse/manageTestRoom/<%=course.exam[i]._id%>"

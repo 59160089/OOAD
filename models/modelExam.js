@@ -6,7 +6,7 @@ var exam = new Schema({
     date: String,
     timeStart: String,
     timeFinish: String,
-    status: String,
+   // status: String,
     room: [
         {
             type: Schema.Types.ObjectId,
@@ -22,6 +22,8 @@ var exam = new Schema({
         },
         seatStatus: String
     }]
+    ,
+    examiner : [{type : Schema.Types.ObjectId , ref : 'User'}]
 }, { collation: 'exam' })
 
 module.exports = mongoose.model('modelExam', exam)

@@ -9,6 +9,9 @@ var User = new Schema ({
     password : {
         type : String
     },
+    prefixName : String ,
+    firstName : String ,
+    lastName : String,
     uType : {
         type : String
     }

@@ -271,6 +271,9 @@ router.get('/courseInfo/:courseId', (req, res) => {
     }).populate(['sub_id', 'teacher', 'student', 'exam'])
 })
 
+
+
+
 //เพิ่มการสอบ
 router.post('/courseInfo/addExam/:courseId', (req, res) => {
     var exam = new Exam(req.body)
@@ -324,23 +327,6 @@ router.get('/autoFillSeat/:examId/:roomId', (req, res) => {
     Room.findById(req.params.roomId, (err, room) => {
         require('../models/modelExam').findById(req.params.examId, (err, exam) => {
 
-            /*  //loop ที่นั่งที่ว่างในห้อง
-              for(let i = 0 ;  i < room.seat.length ; i++){
-                  if(room.seat[i].student == null) {
-                      // loop นิสิตที่ยังไม่มีที่นั่ง 
-                      console.log('seat empty')
-                      for(let j = 0 ; j < exam.score.length ; j++){
-                          if(exam.score[j].seatStatus == "null"){
-                              console.log('student seat null')
-                              room.seat[i].student = exam.score[j].student
-                              exam.score[j].seatStatus == room.seat[i].no
-                              break
-                          }
-                      }
-                      break
-                  }
-              }*/
-
             //loop หานิสิตที่ยังไม่มีที่นั่ง
             for (let i = 0; i < exam.score.length; i++) {
                 if (exam.score[i].seatStatus == 'null') {
@@ -348,7 +334,7 @@ router.get('/autoFillSeat/:examId/:roomId', (req, res) => {
                     for (let j = indexSeat; j < room.seat.length; j++) {
                         if (room.seat[j].student == null) {
                             //ที่นั่งว่าง
-                            exam.score[i].seatStatus = room.seat[j].no
+                            exam.score[i].seatStatus = "ห้อง : " + room.name + " ที่นั่ง : " + room.seat[j].no
                             room.seat[j].student = exam.score[i].studentId
                             indexSeat = j++
                             break
@@ -364,6 +350,64 @@ router.get('/autoFillSeat/:examId/:roomId', (req, res) => {
 
     })
 
+})
+
+//จัดการผู้คุมสอบ
+router.get('/manageExaminer/:examId/:roomId', (req, res) => {
+    require('../models/modelExam').findById(req.params.examId, (err, exam) => {
+        require('../models/modelRoom').findById(req.params.roomId, (err, room) => {
+            require('../models/user').find({}, (err, examiner) => {
+                res.render('manageExaminer', { room: room, exam: exam, examiner: examiner })
+            })
+        })
+    }).populate('examiner')
+})
+
+//เพิ่มผู้คุมสอบ
+router.get('/manageExaminer/add/:examinerId/:examId/:roomId', (req, res) => {
+    require('../models/modelExam').findById(req.params.examId, (err, exam) => {
+        require('../models/modelRoom').findById(req.params.roomId, (err, room) => {
+            exam.examiner.push(req.params.examinerId)
+            room.examiner.push(req.params.examinerId)
+            exam.save().then(result => {
+                room.save().then(result => {
+                    res.redirect(`/manageCourse/manageExaminer/${exam._id}/${room._id}`)
+                })
+            })
+        })
+    })
+})
+
+//ลบผู้คุมสอบ
+router.get('/manageExaminer/delete/:examinerId/:examId/:roomId', (req, res) => {
+
+    require('../models/modelExam').findById(req.params.examId, (err, exam) => {
+        require('../models/modelRoom').findById(req.params.roomId, (err, room) => {
+            console.log(room.examiner)
+            for (let i = 0; i < room.examiner.length; i++) {
+                if (room.examiner[i] == req.params.examinerId) {
+                    room.examiner.splice(i, 1)
+                    break
+                }
+            }
+            console.log(room.examiner)
+
+            console.log('exam : ' + exam.examiner)
+            for(let i = 0 ; i < exam.examiner.length ; i++){
+                if (exam.examiner[i] == req.params.examinerId) {
+                    exam.examiner.splice(i, 1)
+                    break
+                }
+            }
+            console.log('exam : ' + exam.examiner)
+
+            room.save().then(result => {
+                exam.save().then(result => {
+                    res.redirect(`/manageCourse/manageExaminer/${exam._id}/${room._id}`)
+                })
+            })
+        })
+    })
 })
 
 

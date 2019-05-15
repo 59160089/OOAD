@@ -78,11 +78,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for(let i=0; i < examiner.length ; i++) {
+                                <% 
+                                let arrExaminer = []
+
+                                for(let i = 0 ; i < exam.examiner.length ; i++) {
+                                    arrExaminer.push(exam.examiner[i]._id+'')
+                                }
+                                for(let i=0; i < examiner.length ; i++) {
+                                   if(examiner[i].uType != 'student'){
+                                    if(!arrExaminer.includes(examiner[i]._id+'')){
                                 %>
                                 <tr>
                                     <td>
-                                        <%= examiner[i].prefixName %> <%= examiner[i].firstName %> -
+                                        <%= examiner[i].prefixName %> <%= examiner[i].firstName %>  
                                         <%= examiner[i].lastName %>
                                     </td>
                                     <td>
@@ -90,10 +98,10 @@
                                     </td>
 
                                     <td>
-                                        <a href="#" class="btn btn-primary">เลือก</button>
+                                        <a href="/manageCourse/manageExaminer/add/<%=examiner[i]._id%>/<%=exam._id%>/<%=room._id%>" class="btn btn-primary">เลือก</button>
                                     </td>
                                 </tr>
-                                <% } %>
+                                <% }}} %>
 
                             </tbody>
                         </table>
@@ -116,19 +124,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% for(let i=0; i < examiner.length ; i++) {
+                                    <% for(let i=0; i < exam.examiner.length ; i++) {
                                     %>
                                     <tr>
                                         <td>
-                                            <%= examiner[i].prefixName %> <%= examiner[i].firstName %> -
-                                            <%= examiner[i].lastName %>
+                                            <%= exam.examiner[i].prefixName %> <%= exam.examiner[i].firstName %>    
+                                            <%= exam.examiner[i].lastName %>
                                         </td>
                                         <td>
-                                            <%= examiner[i].uType %>
+                                            <%= exam.examiner[i].uType %>
                                         </td>
-
                                         <td>
-                                            <a href="#" class="btn btn-primary">เลือก</button>
+                                            <a href="/manageCourse/manageExaminer/delete/<%=exam.examiner[i]._id%>/<%=exam._id%>/<%=room._id%>" class="btn btn-danger">ลบ</button>
                                         </td>
                                     </tr>
                                     <% } %>

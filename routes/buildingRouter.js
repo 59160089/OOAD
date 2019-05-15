@@ -164,7 +164,7 @@ router.get('/inRoom/:roomId/:examId', (req, res) => {
         require('../models/modelExam').findById(req.params.examId , (err , exam) => {
             res.render('inRoom' , {room : room , exam : exam})
         })
-    }).populate('building')
+    }).populate(['building','examiner'])
 
 })
 

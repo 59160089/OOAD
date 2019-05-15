@@ -15,7 +15,7 @@ var Room = new Schema({
         course : {type : Schema.Types.ObjectId , 
         ref : 'modelCourse'}
     }] ,
-    examiner : [],
+    examiner : [{type : Schema.Types.ObjectId , ref : 'User'}],
     building : {
         type: Schema.Types.ObjectId,
         ref: 'modelBuilding'
